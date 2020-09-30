@@ -323,11 +323,6 @@
       </div>
   </nav>
 </div>
-  <div class="sidebar-button motion-element">
-    <a onclick="tidioChatApi.open();"><i class="fa fa-comment"></i>
-    Chat
-  </a>
-  </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/yangsuhui" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yangsuhui" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
@@ -451,7 +446,6 @@
 
 
 
-  <script src="//code.tidio.co/ewuisafngyveadwyevkgue1dz8tzfjmw.js"></script>
 
 
 
@@ -465,6 +459,13 @@
 
   
 
+  <!--使用 Gitter 实现一个 IM 即时通讯聊天室功能-->
+<script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'AItoshare/community'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
 <script>
@@ -473,9 +474,9 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     var gitalk = new Gitalk({
       clientID    : '43fcc1d500d2624c5e86',
       clientSecret: 'fc38f46901536bc98316d0b88aee169fb2e6eb06',
-      repo        : 'https://yangsuhui.github.io',
-      owner       : 'https://github.com/yangsuhui',
-      admin       : ['https://github.com/yangsuhui'],
+      repo        : 'yangsuhui.github.io',
+      owner       : 'yangsuhui',
+      admin       : ['yangsuhui'],
       id          : '3be7aa98d992907175cbd79c194399f2',
         language: '',
       distractionFreeMode: true
