@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>OCR数据生成之SynthText场景文本</title>
+    <url>/p/5c8c.html</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Deep Learning</category>
+      </categories>
+      <tags>
+        <tag>OCR</tag>
+        <tag>Data Generation</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>深度强化学习DRL从入门到放弃</title>
     <url>/p/32f0.html</url>
     <content><![CDATA[<p><strong><code>Emphasis</code></strong>: 以下内容全是通过个人理解整理所得，如有错误，欢迎指出。<br>**<em>版权所有：杨苏辉**</em></p>
@@ -180,6 +192,7 @@
       </categories>
       <tags>
         <tag>NLP</tag>
+        <tag>Word2Vec</tag>
       </tags>
   </entry>
 </search>
