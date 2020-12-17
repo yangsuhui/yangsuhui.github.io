@@ -30,7 +30,7 @@
 <meta property="og:description" content="本文主要解析目标检测中常用的COCOAPI工具计算mAP的过程，以及增加相关功能用于更好的提供模型优化的方向。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T03:43:27.000Z">
-<meta property="article:modified_time" content="2020-12-16T03:32:07.913Z">
+<meta property="article:modified_time" content="2020-12-17T14:53:06.262Z">
 <meta property="article:author" content="yangsuhui">
 <meta property="article:tag" content="Assessment Criteria">
 <meta property="article:tag" content="Object Detection">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-16 11:32:07" itemprop="dateModified" datetime="2020-12-16T11:32:07+08:00">2020-12-16</time>
+                <time title="修改时间：2020-12-17 22:53:06" itemprop="dateModified" datetime="2020-12-17T22:53:06+08:00">2020-12-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,6 +286,7 @@
 <h1 id="新增功能"><a href="#新增功能" class="headerlink" title="新增功能"></a>新增功能</h1><p>通过该程序，只需要将任意检测模型的预测输出组织成result_test.json形式，ground truth保存成instances_test.json形式，然后就可以直接调用eval_coco.py进行评估。<br><strong>增加的功能：1、平均精确率的计算；2、可以指定特定CatID进行指标计算；3、保存指定条件下的检测好的样本和错检、漏检样本的名称;</strong><br><strong>具体说明：除了cocoapi本身的AP(cocoapi原始程序的AP其实是mAP，而且只能计算所有类的mAP，没有计算指定类别的mAP功能)和AR计算，对官方cocoapi修改后新增真正的AP(Average precision)计算值(新增功能1)，即修改后的cocoapi输出三种指标，AP平均精确率、AR平均召回率，mAP：pr曲线围成的面积；同时可以输出指定类别CatID(新增功能2)、指定aRng(small、medium、large)、指定maxDets(每张图每个类别的最多检测框个数)、指定IOUthr下的三个指标值；</strong><br><strong>除此之外，为了根据模型预测结果分析得到针对性的模型优化方向，可以根据指定条件（CatID、aRng、maxDets、IOUthr）计算测试集中哪些样本按照指定条件完全检出，并将这些样本名称保存在good_predict.txt文件中，同时将存在漏检或错检的bbox的样本名称和检测结果分别保存在leak_det_predict.txt和leak_det_predict.json中，这样就便于进一步分析模型在哪些测试集样本上表现不佳以及表现不佳的原因，进而可以使用离线数据增强或者其他技术对模型进行针对性优化(新增功能3)！！！</strong><br>三种类别的新版cocoapi调用结果示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">loading annotations into memory...</span><br><span class="line">Done (t&#x3D;0.02s)</span><br><span class="line">creating index...</span><br><span class="line">index created!</span><br><span class="line">Loading and preparing results...</span><br><span class="line">DONE (t&#x3D;0.03s)</span><br><span class="line">creating index...</span><br><span class="line">index created!</span><br><span class="line">-----</span><br><span class="line">length of self.params.imgIds: 30    ##总共30个样本</span><br><span class="line">self.params.catIds: [1, 2, 3]       ##总共三种类别</span><br><span class="line">Running per image evaluation...</span><br><span class="line">Evaluate annotation type *bbox*</span><br><span class="line">DONE (t&#x3D;9.42s).</span><br><span class="line">Accumulating evaluation results...</span><br><span class="line">DONE (t&#x3D;0.08s).</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D;100 ] &#x3D; 0.508</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50      | area&#x3D;   all | maxDets&#x3D;100 ] &#x3D; 0.705</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D;100 ] &#x3D; 0.601</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D; small | maxDets&#x3D;100 ] &#x3D; 0.298</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;medium | maxDets&#x3D;100 ] &#x3D; 0.426</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D; large | maxDets&#x3D;100 ] &#x3D; 0.508</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.564</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.456</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D;100 ] &#x3D; 0.557</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50:0.95 | area&#x3D; small | maxDets&#x3D;100 ] &#x3D; 0.345</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50:0.95 | area&#x3D;medium | maxDets&#x3D;100 ] &#x3D; 0.491</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.50:0.95 | area&#x3D; large | maxDets&#x3D;100 ] &#x3D; 0.542</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D;  1 ] &#x3D; 0.421</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.213</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;   all | maxDets&#x3D;100 ] &#x3D; 0.153</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.50      | area&#x3D;   all | maxDets&#x3D;  1 ] &#x3D; 0.566</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.50      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.305</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D;  1 ] &#x3D; 0.487</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.254</span><br><span class="line"></span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.131  ##指定IOUthr</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.114</span><br><span class="line"> Average Precision  (AP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.517</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 1.000</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.579</span><br><span class="line"> Average Recall     (AR) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.066</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.951   ##不同类别catID</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.543</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.75      | area&#x3D;   all | maxDets&#x3D; 10 ] &#x3D; 0.058</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D; small | maxDets&#x3D;100 ] &#x3D; 0.298   ##不同aRng</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D;medium | maxDets&#x3D;100 ] &#x3D; 0.426</span><br><span class="line"> Average P-R curve Area (mAP) @[ IoU&#x3D;0.50:0.95 | area&#x3D; large | maxDets&#x3D;100 ] &#x3D; 0.303</span><br></pre></td></tr></table></figure>
 <p>说明：官方的cocoapi计算的mAP是IOU从0.5到0.95，每隔0.05下计算的所有类别的AP的平均值；<br>具体计算是将模型的预测框先按照每一张图片，每一种类别，按照置信度从大到小得到maxDet个框，然后将测试集中特定类别的所有框按置信度总的排序，继而再对排序后的指定类别的所有框计算tp、fp，然后对所有类别求平均得到mAP(pr曲线的面积)；因此也可以知道pr曲线是成反比例，而且是置信度递减的，置信度越低，recall越高，precision越低。**<em>注意maxDet是指一张图片，一种类别容许的最多模型检测框个数，而不是一张图片，所有类别；如果一张图片单类别检测框不足maxDet，也直接去单类别所有检测框，并不会其他补0等操作；cocoapi中​矩阵默认-1初始化，因此如果模型检测结果不理想或者测试集中没有满足条件的数据(比如数据集中只有large的物体，计算small物体的评价指标)都可能出现-1的计算结果​。**</em></p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>COCOAPI: <a target="_blank" rel="noopener" href="https://github.com/cocodataset/cocoapi">https://github.com/cocodataset/cocoapi</a><br>TIES</p>
     </div>
 
     
@@ -330,7 +331,7 @@
   <p><span>本文标题:</span><a href="/p/5b87.html">COCOAPI 评价指标解析及功能改进</a></p>
   <p><span>文章作者:</span>杨苏辉</a></p>
   <p><span>发布时间:</span>2020年12月15日 - 11:43</p>
-  <p><span>最后更新:</span>2020年12月16日 - 11:32</p>
+  <p><span>最后更新:</span>2020年12月17日 - 22:53</p>
   <p><span>原始链接:</span><a href="/p/5b87.html" title="COCOAPI 评价指标解析及功能改进">https://yangsuhui.github.io/p/5b87.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yangsuhui.github.io/p/5b87.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -470,7 +471,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">程序入口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%88%AB%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">特别说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eval-coco-py"><span class="nav-number">1.2.</span> <span class="nav-text">eval_coco.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%90%8E%E7%9A%84cocoeval-py"><span class="nav-number">1.3.</span> <span class="nav-text">修改后的cocoeval.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">新增功能</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">程序入口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%88%AB%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">特别说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eval-coco-py"><span class="nav-number">1.2.</span> <span class="nav-text">eval_coco.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%90%8E%E7%9A%84cocoeval-py"><span class="nav-number">1.3.</span> <span class="nav-text">修改后的cocoeval.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">新增功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -486,20 +487,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -562,12 +563,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">54k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">47 分钟</span>
+    <span title="站点阅读时长">49 分钟</span>
 </div>
 
 <div>
