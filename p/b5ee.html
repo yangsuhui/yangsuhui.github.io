@@ -22,21 +22,25 @@
     var CONFIG = {"hostname":"yangsuhui.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文主要讲述NLP中最基础的词向量的相关内容。">
+  <meta name="description" content="本文主要介绍如何搭建Microsoft的NNI工具环境以及使用NNI进行Mnist分类任务的超参数搜索。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NLP之词向量">
-<meta property="og:url" content="https://yangsuhui.github.io/p/ca8e.html">
+<meta property="og:title" content="自动超参搜索之NNI工具使用">
+<meta property="og:url" content="https://yangsuhui.github.io/p/b5ee.html">
 <meta property="og:site_name" content="AI Ants">
-<meta property="og:description" content="本文主要讲述NLP中最基础的词向量的相关内容。">
+<meta property="og:description" content="本文主要介绍如何搭建Microsoft的NNI工具环境以及使用NNI进行Mnist分类任务的超参数搜索。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-01T06:22:57.000Z">
-<meta property="article:modified_time" content="2020-12-15T04:11:19.589Z">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217153623.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217154204.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217155358.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217155804.JPG">
+<meta property="article:published_time" content="2020-12-16T09:45:13.000Z">
+<meta property="article:modified_time" content="2020-12-17T08:41:42.004Z">
 <meta property="article:author" content="yangsuhui">
-<meta property="article:tag" content="NLP">
-<meta property="article:tag" content="Word2Vec">
+<meta property="article:tag" content="AutoML">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217153623.JPG">
 
-<link rel="canonical" href="https://yangsuhui.github.io/p/ca8e.html">
+<link rel="canonical" href="https://yangsuhui.github.io/p/b5ee.html">
 
 
 <script id="page-configurations">
@@ -49,7 +53,7 @@
   };
 </script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/social-share.js@1/dist/js/social-share.min.css">
-  <title>NLP之词向量 | AI Ants</title>
+  <title>自动超参搜索之NNI工具使用 | AI Ants</title>
   
 
 
@@ -199,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yangsuhui.github.io/p/ca8e.html">
+    <link itemprop="mainEntityOfPage" href="https://yangsuhui.github.io/p/b5ee.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -212,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          NLP之词向量
+          自动超参搜索之NNI工具使用
         </h1>
 
         <div class="post-meta">
@@ -222,14 +226,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-01 14:22:57" itemprop="dateCreated datePublished" datetime="2020-10-01T14:22:57+08:00">2020-10-01</time>
+              <time title="创建时间：2020-12-16 17:45:13" itemprop="dateCreated datePublished" datetime="2020-12-16T17:45:13+08:00">2020-12-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-15 12:11:19" itemprop="dateModified" datetime="2020-12-15T12:11:19+08:00">2020-12-15</time>
+                <time title="修改时间：2020-12-17 16:41:42" itemprop="dateModified" datetime="2020-12-17T16:41:42+08:00">2020-12-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,7 +241,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                  <a href="/categories/AutoML/" itemprop="url" rel="index"><span itemprop="name">AutoML</span></a>
                 </span>
             </span>
 
@@ -254,14 +258,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -273,7 +277,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="NNI简介"><a href="#NNI简介" class="headerlink" title="NNI简介"></a>NNI简介</h1><p>NNI (Neural Network Intelligence) 是一个轻量但强大的工具包，帮助用户自动的进行特征工程，神经网络架构搜索，超参调优以及模型压缩。<br>NNI 管理自动机器学习 (AutoML) 的 Experiment，调度运行由调优算法生成的 Trial 任务来找到最好的神经网络架构和/或超参，支持各种训练环境，如本机，远程服务器，OpenPAI，Kubeflow，基于 K8S 的 FrameworkController（如，AKS 等)， DLWorkspace (又称 DLTS), AML (Azure Machine Learning) 以及其它环境。</p>
+<h1 id="NNI环境安装"><a href="#NNI环境安装" class="headerlink" title="NNI环境安装"></a>NNI环境安装</h1><p>根据官网<a target="_blank" rel="noopener" href="https://github.com/microsoft/nni/blob/master/README_zh_CN.md">安装教程</a>进行安装即可，也可以直接下载已经安装好NNI环境的docker镜像(docker pull 857470845/hvd_trt_apex_torch:v1)进行测试。<br>说明：NNI工程download下来后，deployment文件夹下有pypi和docker两种安装方式；docs文件夹下是一些使用说明保护config配置文件中的一些参数含义；examples下是<br>一些具体示例。</p>
+<h1 id="测试MNIST-pytorch"><a href="#测试MNIST-pytorch" class="headerlink" title="测试MNIST-pytorch"></a>测试MNIST-pytorch</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nnictl create --config nni&#x2F;examples&#x2F;trials&#x2F;mnist-tfv1&#x2F;config.yml -p 8888</span><br></pre></td></tr></table></figure>
+<p>-p 指定运行端口；</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217153623.JPG" alt="nni"><br>本地chrome浏览器打开<a target="_blank" rel="noopener" href="http://172.22.22.203:8888/%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%A6%82%E4%B8%8B%EF%BC%9A">http://172.22.22.203:8888/，结果如下：</a></p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217154204.JPG" alt="nni-client"></p>
+<p>超参数搜索的结果：</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217155358.JPG" alt="nni-result"></p>
+<p>对应的accuracy：</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20201217155804.JPG" alt="nni-metric"></p>
+<p>同样的方式运行pytorch版本的MNIST:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nnictl create --config nni&#x2F;examples&#x2F;trials&#x2F;mnist-pytorch&#x2F;config.yml -p 8888</span><br></pre></td></tr></table></figure>
+<p><strong>不过直接从官网下载的mnist-pytorch下的config.yml有一些<a target="_blank" rel="noopener" href="https://github.com/microsoft/nni/blob/master/docs/zh_CN/Tutorial/ExperimentConfig.md">参数</a>需要修改一下才能使用GPU训练；</strong><br>这是我修改后的config.yml配置文件，仅供参考。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">authorName: default</span><br><span class="line">experimentName: example_mnist_pytorch</span><br><span class="line">trialConcurrency: 2</span><br><span class="line">maxExecDuration: 1h</span><br><span class="line">maxTrialNum: 10</span><br><span class="line">#choice: local, remote, pai</span><br><span class="line">trainingServicePlatform: local</span><br><span class="line">searchSpacePath: search_space.json</span><br><span class="line">#choice: true, false</span><br><span class="line">useAnnotation: false</span><br><span class="line">tuner:</span><br><span class="line">  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner, GPTuner</span><br><span class="line">  #SMAC (SMAC should be installed through nnictl)</span><br><span class="line">  builtinTunerName: TPE</span><br><span class="line">  classArgs:</span><br><span class="line">    #choice: maximize, minimize</span><br><span class="line">    optimize_mode: maximize</span><br><span class="line">trial:</span><br><span class="line">  command: python3 mnist.py</span><br><span class="line">  codeDir: .</span><br><span class="line">  gpuNum: 2</span><br><span class="line">localConfig:</span><br><span class="line">  maxTrialNumPerGpu:  2</span><br><span class="line">  useActiveGpu: true</span><br><span class="line">  gpuIndices: 1,3</span><br></pre></td></tr></table></figure>
+<p><strong><em>特别说明</em></strong>：NNI可以本地运行，也可以和其他框架进行插件结合<a target="_blank" rel="noopener" href="https://nni.readthedocs.io/en/latest/Tutorial/QuickStart.html#related-topic">配置</a>，比如和Microsoft的OpenPAI平台结合，就可以将训练任务上传到PAI平台上进行NNI训练，<br>不同的配置方式使用不同的config文件；</p>
+<h1 id="References："><a href="#References：" class="headerlink" title="References："></a>References：</h1><p>NNI项目地址：<a target="_blank" rel="noopener" href="https://github.com/microsoft/nni/blob/master/README_zh_CN.md">https://github.com/microsoft/nni/blob/master/README_zh_CN.md</a><br>使用说明： <a target="_blank" rel="noopener" href="https://nni.readthedocs.io/en/latest/Tutorial/QuickStart.html">https://nni.readthedocs.io/en/latest/Tutorial/QuickStart.html</a><br>config配置参数说明: <a target="_blank" rel="noopener" href="https://github.com/microsoft/nni/blob/master/docs/zh_CN/Tutorial/ExperimentConfig.md">https://github.com/microsoft/nni/blob/master/docs/zh_CN/Tutorial/ExperimentConfig.md</a></p>
     </div>
 
     
@@ -315,12 +334,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/p/ca8e.html">NLP之词向量</a></p>
+  <p><span>本文标题:</span><a href="/p/b5ee.html">自动超参搜索之NNI工具使用</a></p>
   <p><span>文章作者:</span>杨苏辉</a></p>
-  <p><span>发布时间:</span>2020年10月01日 - 14:22</p>
-  <p><span>最后更新:</span>2020年12月15日 - 12:11</p>
-  <p><span>原始链接:</span><a href="/p/ca8e.html" title="NLP之词向量">https://yangsuhui.github.io/p/ca8e.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yangsuhui.github.io/p/ca8e.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年12月16日 - 17:45</p>
+  <p><span>最后更新:</span>2020年12月17日 - 16:41</p>
+  <p><span>原始链接:</span><a href="/p/b5ee.html" title="自动超参搜索之NNI工具使用">https://yangsuhui.github.io/p/b5ee.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yangsuhui.github.io/p/b5ee.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -363,8 +382,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
-              <a href="/tags/Word2Vec/" rel="tag"><i class="fa fa-tag"></i> Word2Vec</a>
+              <a href="/tags/AutoML/" rel="tag"><i class="fa fa-tag"></i> AutoML</a>
           </div>
 
         
@@ -373,13 +391,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/p/32f0.html" rel="prev" title="深度强化学习DRL从入门到放弃">
-      <i class="fa fa-chevron-left"></i> 深度强化学习DRL从入门到放弃
+    <a href="/p/5b87.html" rel="prev" title="COCOAPI 评价指标解析及功能改进">
+      <i class="fa fa-chevron-left"></i> COCOAPI 评价指标解析及功能改进
     </a></div>
-      <div class="post-nav-item">
-    <a href="/p/5c8c.html" rel="next" title="OCR数据生成之SynthText场景文本">
-      OCR数据生成之SynthText场景文本 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -458,6 +473,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NNI%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">NNI简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NNI%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">NNI环境安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95MNIST-pytorch"><span class="nav-number">3.</span> <span class="nav-text">测试MNIST-pytorch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">References：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -674,7 +690,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'yangsuhui.github.io',
       owner       : 'yangsuhui',
       admin       : ['yangsuhui'],
-      id          : '2f297f61b2b9972e7ce24c065700e52a',
+      id          : '28fe7aa929bb7c36b87531fdf70ae609',
         language: '',
       distractionFreeMode: true
     });
