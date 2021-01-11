@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"yangsuhui.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="我思故我在">
+  <meta name="description" content="网络变种1、PyTorch-GAN https:&#x2F;&#x2F;github.com&#x2F;eriklindernoren&#x2F;PyTorch-GAN 1234567891011121314151617181920212223242526272829303132333435Table of ContentsInstallationImplementationsAuxiliary Classifier GANAdvers">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GAN变种及应用汇总">
 <meta property="og:url" content="https://yangsuhui.github.io/p/eac6.html">
 <meta property="og:site_name" content="AI Ants">
-<meta property="og:description" content="我思故我在">
+<meta property="og:description" content="网络变种1、PyTorch-GAN https:&#x2F;&#x2F;github.com&#x2F;eriklindernoren&#x2F;PyTorch-GAN 1234567891011121314151617181920212223242526272829303132333435Table of ContentsInstallationImplementationsAuxiliary Classifier GANAdvers">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-07T08:58:22.000Z">
-<meta property="article:modified_time" content="2021-01-07T08:58:22.239Z">
+<meta property="article:modified_time" content="2021-01-08T03:43:32.198Z">
 <meta property="article:author" content="yangsuhui">
 <meta name="twitter:card" content="summary">
 
@@ -222,6 +222,13 @@
 
               <time title="创建时间：2021-01-07 16:58:22" itemprop="dateCreated datePublished" datetime="2021-01-07T16:58:22+08:00">2021-01-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-08 11:43:32" itemprop="dateModified" datetime="2021-01-08T11:43:32+08:00">2021-01-08</time>
+              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -236,7 +243,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>837</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,7 +262,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="网络变种"><a href="#网络变种" class="headerlink" title="网络变种"></a>网络变种</h2><p>1、PyTorch-GAN</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/eriklindernoren/PyTorch-GAN">https://github.com/eriklindernoren/PyTorch-GAN</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Table of Contents</span><br><span class="line">Installation</span><br><span class="line">Implementations</span><br><span class="line">Auxiliary Classifier GAN</span><br><span class="line">Adversarial Autoencoder</span><br><span class="line">BEGAN</span><br><span class="line">BicycleGAN</span><br><span class="line">Boundary-Seeking GAN</span><br><span class="line">Cluster GAN</span><br><span class="line">Conditional GAN</span><br><span class="line">Context-Conditional GAN</span><br><span class="line">Context Encoder</span><br><span class="line">Coupled GAN</span><br><span class="line">CycleGAN</span><br><span class="line">Deep Convolutional GAN</span><br><span class="line">DiscoGAN</span><br><span class="line">DRAGAN</span><br><span class="line">DualGAN</span><br><span class="line">Energy-Based GAN</span><br><span class="line">Enhanced Super-Resolution GAN</span><br><span class="line">GAN</span><br><span class="line">InfoGAN</span><br><span class="line">Least Squares GAN</span><br><span class="line">MUNIT</span><br><span class="line">Pix2Pix</span><br><span class="line">PixelDA</span><br><span class="line">Relativistic GAN</span><br><span class="line">Semi-Supervised GAN</span><br><span class="line">Softmax GAN</span><br><span class="line">StarGAN</span><br><span class="line">Super-Resolution GAN</span><br><span class="line">UNIT</span><br><span class="line">Wasserstein GAN</span><br><span class="line">Wasserstein GAN GP</span><br><span class="line">Wasserstein GAN DIV</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="风格迁移"><a href="#风格迁移" class="headerlink" title="风格迁移"></a>风格迁移</h3><p>1、pystiche</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/pmeier/pystiche">https://github.com/pmeier/pystiche</a></p>
+<p>Framework for Neural Style Transfer (NST) built upon PyTorch</p>
+<p>2、GMA_CI_2019_ssim_content_loss</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/pmeier/GMA_CI_2019_ssim_content_loss">https://github.com/pmeier/GMA_CI_2019_ssim_content_loss</a></p>
+<p>Content representation for Neural Style Transfer Algorithms based on Structural Similarity</p>
+
     </div>
 
     
@@ -300,7 +319,7 @@
   <p><span>本文标题:</span><a href="/p/eac6.html">GAN变种及应用汇总</a></p>
   <p><span>文章作者:</span></a></p>
   <p><span>发布时间:</span>2021年01月07日 - 16:58</p>
-  <p><span>最后更新:</span>2021年01月07日 - 16:58</p>
+  <p><span>最后更新:</span>2021年01月08日 - 11:43</p>
   <p><span>原始链接:</span><a href="/p/eac6.html" title="GAN变种及应用汇总">https://yangsuhui.github.io/p/eac6.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yangsuhui.github.io/p/eac6.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -435,6 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8F%98%E7%A7%8D"><span class="nav-number">1.</span> <span class="nav-text">网络变种</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB"><span class="nav-number">2.1.</span> <span class="nav-text">风格迁移</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -450,7 +470,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -526,12 +546,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">74k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:08</span>
 </div>
 
 <div>

@@ -22,19 +22,30 @@
     var CONFIG = {"hostname":"yangsuhui.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文主要介绍如何利用SynthText生成自己的场景文本。">
+  <meta name="description" content="自然场景的文字识别的数据生成至关重要，可以大量降低人工标注的成本，这里详细介绍SynthText的安装和使用，并生成自己的bg数据集对应的图片以及优化引入生成垂直文本的功能。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OCR数据生成之SynthText场景文本">
 <meta property="og:url" content="https://yangsuhui.github.io/p/5c8c.html">
 <meta property="og:site_name" content="AI Ants">
-<meta property="og:description" content="本文主要介绍如何利用SynthText生成自己的场景文本。">
+<meta property="og:description" content="自然场景的文字识别的数据生成至关重要，可以大量降低人工标注的成本，这里详细介绍SynthText的安装和使用，并生成自己的bg数据集对应的图片以及优化引入生成垂直文本的功能。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109110412.png">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109143046.jpg">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109152637.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109151853.png">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109170533.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109165957.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109164801.jpg">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109173903.jpg">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109160003.JPG">
+<meta property="og:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109165308.png">
 <meta property="article:published_time" content="2020-10-25T06:04:55.000Z">
-<meta property="article:modified_time" content="2020-10-25T13:15:45.859Z">
+<meta property="article:modified_time" content="2021-01-09T12:27:30.503Z">
 <meta property="article:author" content="yangsuhui">
 <meta property="article:tag" content="OCR">
 <meta property="article:tag" content="Data Generation">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109110412.png">
 
 <link rel="canonical" href="https://yangsuhui.github.io/p/5c8c.html">
 
@@ -221,10 +232,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-25 14:04:55 / 修改时间：21:15:45" itemprop="dateCreated datePublished" datetime="2020-10-25T14:04:55+08:00">2020-10-25</time>
+              <time title="创建时间：2020-10-25 14:04:55" itemprop="dateCreated datePublished" datetime="2020-10-25T14:04:55+08:00">2020-10-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-09 20:27:30" itemprop="dateModified" datetime="2021-01-09T20:27:30+08:00">2021-01-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -248,14 +265,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>6.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -267,7 +284,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="SynthText官方示例生成效果"><a href="#SynthText官方示例生成效果" class="headerlink" title="SynthText官方示例生成效果"></a>SynthText官方示例生成效果</h2><p><a target="_blank" rel="noopener" href="https://github.com/ankush-me/SynthText">https://github.com/ankush-me/SynthText</a></p>
+<p>直接下载工程，和工程开源的SynthText.h5等数据，直接python gen.py即可。</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109110412.png" alt="samples"></p>
+<p><strong>我这里使用的是工程中的python3分支</strong></p>
+<h2 id="Adding-New-Images"><a href="#Adding-New-Images" class="headerlink" title="Adding New Images"></a>Adding New Images</h2><p>Segmentation and depth-maps are required to use new images as background. Sample scripts for obtaining these are available <a target="_blank" rel="noopener" href="https://github.com/ankush-me/SynthText/tree/master/prep_scripts">here</a>.</p>
+<ul>
+<li><code>predict_depth.m</code> MATLAB script to regress a depth mask for a given RGB image; uses the network of <a target="_blank" rel="noopener" href="https://bitbucket.org/fayao/dcnf-fcsp/">Liu etal.</a> However, more recent works (e.g., <a target="_blank" rel="noopener" href="https://github.com/iro-cp/FCRN-DepthPrediction">this</a>) might give better results.</li>
+<li><code>run_ucm.m</code> and <code>floodFill.py</code> for getting segmentation masks using <a target="_blank" rel="noopener" href="https://github.com/jponttuset/mcg">gPb-UCM</a>.</li>
+</ul>
+<p>For an explanation of the fields in <code>dset.h5</code> (e.g.: <code>seg</code>,<code>area</code>,<code>label</code>), please check this <a target="_blank" rel="noopener" href="https://github.com/ankush-me/SynthText/issues/5#issuecomment-274490044">comment</a>.</p>
+<p>要想使用自己的bg数据，需要先得到depth和seg, 然后合并成dset.h5文件，之后调用SynthText中的gen.py生成数据；</p>
+<h3 id="生成depth"><a href="#生成depth" class="headerlink" title="生成depth"></a>生成depth</h3><p><a target="_blank" rel="noopener" href="https://bitbucket.org/fayao/dcnf-fcsp/src/master/">https://bitbucket.org/fayao/dcnf-fcsp/src/master/</a></p>
+<p>我这里使用的自己的window10的笔记本电脑中的matlab环境(Matlab2016b)</p>
+<p>使用改代码时，需要在libs下MatConvNet和VLFeat，虽然原工程已经配置了这两个，但是matconvnet_20141015需要换成matconvnet-1.0-beta9版本(下载地址：<a target="_blank" rel="noopener" href="https://www.vlfeat.org/matconvnet/download/)%EF%BC%8C%E4%B8%8D%E7%84%B6%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E4%BC%9A%E6%8A%A5%E9%94%99">https://www.vlfeat.org/matconvnet/download/)，不然程序运行时会报错</a>, VLFeat不用修改；同时修改./demo/demo_DCNF_FCSP_depths_prediction.m中的相关部分(P15-23行)如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function demo_DCNF_FCSP_depths_prediction(varargin)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">run( &#39;..&#x2F;libs&#x2F;vlfeat-0.9.18&#x2F;toolbox&#x2F;vl_setup&#39;);</span><br><span class="line"></span><br><span class="line">% dir_matConvNet&#x3D;&#39;..&#x2F;libs&#x2F;matconvnet_20141015&#x2F;matlab&#x2F;&#39;;</span><br><span class="line">dir_matConvNet&#x3D;&#39;..&#x2F;libs&#x2F;matconvnet-1.0-beta9&#x2F;matconvnet-1.0-beta9&#x2F;matlab&#x2F;&#39;;</span><br><span class="line">addpath(genpath(dir_matConvNet));</span><br><span class="line">run([dir_matConvNet &#39;vl_setupnn.m&#39;]);</span><br></pre></td></tr></table></figure>
+
+<p>注意重新编译matconvert-1.0-beta9版式时，参考<a target="_blank" rel="noopener" href="https://www.vlfeat.org/matconvnet/install/%E4%B8%AD%E7%9A%84%E8%AF%B4%E6%98%8E%EF%BC%8C%E6%88%91%E8%BF%99%E9%87%8C%E6%98%AF%E7%9B%B4%E6%8E%A5%E7%BC%96%E8%AF%91%E7%9A%84CPU%E7%89%88%E6%9C%AC%EF%BC%9B%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4%E5%A6%82%E4%B8%8B%EF%BC%8C%E5%9B%A0%E4%B8%BA%E6%88%91%E7%9A%84matlab%E4%B8%80%E5%BC%80%E5%A7%8B%E6%B2%A1%E6%9C%89%E8%A3%85C++%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%8C%E6%89%80%E4%BB%A5%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AEVS2015%E7%9A%84C++%E7%BC%96%E8%AF%91%E5%99%A8%E7%BB%99matlab(https://blog.csdn.net/qq_17783559/article/details/82017379)%EF%BC%8C%E7%84%B6%E5%90%8Emex">https://www.vlfeat.org/matconvnet/install/中的说明，我这里是直接编译的CPU版本；具体步骤如下，因为我的matlab一开始没有装C++的编译器，所以需要配置VS2015的C++编译器给matlab(https://blog.csdn.net/qq_17783559/article/details/82017379)，然后mex</a> -setup C++才能成功。</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109143046.jpg" alt="matcovert"></p>
+<p>编译成功后，使用<strong>dcnf-fcsp/src/master/demo/demo_DCNF_FCSP_depths_prediction.m</strong>或者<strong>SynthText/prep_scripts/predict_depth.m</strong>生成自己准备的bg图片的depth.mat文件，我是准备了12张example，每一个example对应一个文件夹，最终生成的效果是每一个文件夹下有一张rgb原始图片，生成一张gray灰度图片和一份depth.mat文件。</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109152637.JPG" alt="matconvert_1"></p>
+<p>将这12个文件夹放到服务器上，运行convert_depth_mat_to_h5.py程序，得到depth.h5文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">##convert_depth_mat_to_h5.py</span><br><span class="line">import os</span><br><span class="line">import h5py</span><br><span class="line">import glob</span><br><span class="line"></span><br><span class="line">def convert_mat_to_h5(mat_path, h5_output_path):</span><br><span class="line"></span><br><span class="line">    data_w&#x3D;h5py.File(h5_output_path,&#39;w&#39;)</span><br><span class="line">    for sample in glob.glob(path):</span><br><span class="line">        print(&#39;sample:&#39;,sample)</span><br><span class="line">        imname &#x3D; sample.split(&#39;&#x2F;&#39;)[-2] + &#39;.jpg&#39;</span><br><span class="line">        data&#x3D;h5py.File(sample,&#39;r&#39;)</span><br><span class="line">        data_w.create_dataset(imname, data&#x3D;data[&#39;data_obj&#39;][:])</span><br><span class="line">    data_w.close()</span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&#39;__main__&#39;:</span><br><span class="line">    path &#x3D; r&#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;results_three&#x2F;custom_outdoor_sample&#x2F;*&#x2F;*.mat&#39;</span><br><span class="line">    output_path &#x3D; r&#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;depth.h5&#39;</span><br><span class="line">    convert_mat_to_h5(path,output_path)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成seg"><a href="#生成seg" class="headerlink" title="生成seg"></a>生成seg</h3><p><a target="_blank" rel="noopener" href="https://github.com/jponttuset/mcg">https://github.com/jponttuset/mcg</a></p>
+<p>该程序只能运行在linux环境下，因此我在ubuntu16.04的环境下安装了matlab R2016b，然后使用<strong>SynthText/prep_scripts/run_ucm.m</strong>，如下图所示，修改代码中的img_dir和mcg_dir路径即可，得到指定路径下的</p>
+<p>ucm.mat文件，然后运行<strong>SynthText/prep_scripts/floodFill.py</strong>，修改<strong>floodFill.py</strong>程序中的base_dir为第一步生成的ucm.mat文件路径，得到最终的<strong>seg_uint16.h5</strong>文件。</p>
+<img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109151853.png" alt="seg_matlab" style="zoom:200%;" />
+
+<h3 id="合并depth和seg等文件成统一的dest-h5"><a href="#合并depth和seg等文件成统一的dest-h5" class="headerlink" title="合并depth和seg等文件成统一的dest.h5"></a>合并depth和seg等文件成统一的dest.h5</h3><p>运行程序<a target="_blank" rel="noopener" href="https://github.com/JarveeLee/SynthText_Chinese_version/blob/master/add_more_data.py">add_more_data.py</a>，借鉴<a target="_blank" rel="noopener" href="https://github.com/ankush-me/SynthText/blob/master/use_preproc_bg.py">use_preproc_bg.py</a>写法)，用于将1、2步生成的depth和seg和原图组合成同一个dset文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">##add_more_data.py</span><br><span class="line">import numpy as np</span><br><span class="line">import h5py</span><br><span class="line">import os, sys, traceback</span><br><span class="line">import os.path as osp</span><br><span class="line">import wget, tarfile</span><br><span class="line">import cv2</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def add_more_data_into_dset(DB_FNAME,more_img_file_path,more_depth_path,more_seg_path):</span><br><span class="line">  db&#x3D;h5py.File(DB_FNAME,&#39;w&#39;)</span><br><span class="line">  #depth_db&#x3D;get_data(more_depth_path)</span><br><span class="line">  depth_db&#x3D;h5py.File(more_depth_path,&#39;r&#39;)</span><br><span class="line">  #seg_db&#x3D;get_data(more_seg_path)</span><br><span class="line">  seg_db&#x3D;h5py.File(more_seg_path,&#39;r&#39;)</span><br><span class="line">  db.create_group(&#39;image&#39;)</span><br><span class="line">  db.create_group(&#39;depth&#39;)</span><br><span class="line">  db.create_group(&#39;seg&#39;)</span><br><span class="line">  for imname in os.listdir(more_img_file_path):</span><br><span class="line">    if imname.endswith(&#39;.jpg&#39;):</span><br><span class="line">      full_path&#x3D;more_img_file_path+imname</span><br><span class="line">      print(full_path,imname)</span><br><span class="line"></span><br><span class="line">      # j&#x3D;Image.open(full_path)</span><br><span class="line">      # imgSize&#x3D;j.size</span><br><span class="line">      # rawData&#x3D;j.tostring()</span><br><span class="line">      # img&#x3D;Image.fromstring(&#39;RGB&#39;,imgSize,rawData)</span><br><span class="line">      img &#x3D; cv2.imread(full_path)</span><br><span class="line">      img &#x3D; img[...,::-1]</span><br><span class="line">      #img &#x3D; img.astype(&#39;uint16&#39;)</span><br><span class="line">      db[&#39;image&#39;].create_dataset(imname,data&#x3D;img)</span><br><span class="line">      db[&#39;depth&#39;].create_dataset(imname,data&#x3D;depth_db[imname])</span><br><span class="line">      db[&#39;seg&#39;].create_dataset(imname,data&#x3D;seg_db[&#39;mask&#39;][imname])</span><br><span class="line">      db[&#39;seg&#39;][imname].attrs[&#39;area&#39;]&#x3D;seg_db[&#39;mask&#39;][imname].attrs[&#39;area&#39;]</span><br><span class="line">      db[&#39;seg&#39;][imname].attrs[&#39;label&#39;]&#x3D;seg_db[&#39;mask&#39;][imname].attrs[&#39;label&#39;]</span><br><span class="line">  db.close()</span><br><span class="line">  depth_db.close()</span><br><span class="line">  seg_db.close()</span><br><span class="line"># path to the data-file, containing image, depth and segmentation:</span><br><span class="line">DB_FNAME &#x3D; &#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;dset_own_12.h5&#39;</span><br><span class="line"></span><br><span class="line">#add more data into the dset</span><br><span class="line">more_depth_path&#x3D;&#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;depth.h5&#39;</span><br><span class="line">more_seg_path&#x3D;&#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;seg_uint16.h5&#39;</span><br><span class="line">more_img_file_path&#x3D;&#39;&#x2F;data&#x2F;nfs&#x2F;yangsuhui&#x2F;SynthText&#x2F;prep_scripts&#x2F;new_own_image_material&#x2F;bg_imgs&#x2F;&#39;</span><br><span class="line"></span><br><span class="line">add_more_data_into_dset(DB_FNAME,more_img_file_path,more_depth_path,more_seg_path)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成数据"><a href="#生成数据" class="headerlink" title="生成数据"></a>生成数据</h3><p>根据自己数据生成的dset_own_12.h5文件，运行gen.py(修改DB_FNAME = osp.join(DATA_PATH,’dset.h5’)为自己的dset文件)，即可生成自己数据背景下的生成数据。</p>
+<p>运行gen.py，终端显示(有些bg图片计算过程中会出现一些错误，比如下面的0 of 11，这表明有些图片做bg不太合适，最终生成的是10张图片(去掉背景错误生成不了的)，10中背景，不同背景只生成一张，通过gen.py中的超参数设置(INSTANCE_PER_IMAGE))：</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109170533.JPG" alt="gen"></p>
+<p>运行visualize_results.py可以查看SynthText.h5文件生成的效果，并保存图片，运行效果如下，运行一张图片，并弹出图片窗口，终端是显示图片名称和生成的图片中的words和chars个数以及生成的文本text，最终的图片上可以控制显示charBB(字符级别的框)和wordBB(单词级别)。</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109165957.JPG" alt="vis"></p>
+<p>下图中除了第一张是用的官方的SynthText.h5生成的，其余的都是自己的bg图片生成的效果。</p>
+<img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109164801.jpg" alt="5ff96cfc3cdf7" style="zoom:200%;" />
+
+<h3 id="垂直文本的生成"><a href="#垂直文本的生成" class="headerlink" title="垂直文本的生成"></a>垂直文本的生成</h3><p>参考<a target="_blank" rel="noopener" href="https://github.com/ankush-me/SynthText/issues/114">https://github.com/ankush-me/SynthText/issues/114</a>, 修改text_utils.py文件下的相应函数(render_multiline)即可，效果如下：</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109173903.jpg" alt="5ff979801f3b9"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1、该程序的visualize_results.py利用matplotlib可以将远程的SynthText.h5中的生成的内容显示出来，用pillow或者opencv很难将图像显示出来在MobaxTerm上；</p>
+<p>2、步骤1和2中的depth.mat和ucm.mat文件转h5文件时，mat文件的读取有两种方式，尝试了scipy的io模块和h5py模块，其中如果保存的mat文件时用的matlab指定的-v7.3(如步骤2中run_ucm.py中最后一行save(‘ucm.mat’,’ucms’,’names’,’-v7.3’);)，则scipy的io读取会报错，解决方法就是统一用h5py读取mat文件(参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/Zhuanzhu22nian/article/details/89525762?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.not_use_machine_learn_pai">1</a>,<a target="_blank" rel="noopener" href="https://blog.csdn.net/wushaowu2014/article/details/80071238">2</a>);有时候scipy的io模块导入不了，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35860352/article/details/80209370">解决方法</a>；</p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109160003.JPG" alt="error"></p>
+<p>3、将多个图片拼成一张长图，我是用的是<a target="_blank" rel="noopener" href="https://pinthemall.net/">pinthemall</a>工具，当然还有许多其他好用的图像<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/50819697">拼接工具</a>, 其中Shapecollage可以将图片拼成不同形状，甚至绘制自定义形状，而Collagelt则只能固定长方形(<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25151315)%EF%BC%9B">https://zhuanlan.zhihu.com/p/25151315)；</a></p>
+<p><img data-src="https://gitee.com/yangsuhui_i/pic-go-picture-bed/raw/master/imgs/deep_RL/20210109165308.png" alt="v2-19206586ec0f3436c75e458a7e9a7892_720w"></p>
+<p>4、从代码和最后生成的效果上看，SynthText主要是根据depth图和seg图，主要将根据语料和文字频率生成的文字放到图片中的光滑区域，与实际场景图片中的文字出现的位置更加切合；</p>
+<p>5、SynthText生成的框有char和word级别，没有sentence级别，因此如果是需要直接检测场景图片中的句子级别的(检测+识别)，该工程需要额外修改，或者应该使用其他的工程；</p>
+<p>6、该工程生成数据的过程比较繁琐，而且速度比较慢;</p>
+<p>7、修改后的<a target="_blank" rel="noopener" href="https://github.com/yangsuhui/SynthText_Own">代码</a>，因为自己生成的depth.h5中是单通道的，而官方的示例是多通道的，因此根据需要选择是否注释gen.py中112行(#depth = depth[:,:,1]   ##use own data to 注释这一行)。</p>
     </div>
 
     
@@ -318,7 +384,7 @@
   <p><span>本文标题:</span><a href="/p/5c8c.html">OCR数据生成之SynthText场景文本</a></p>
   <p><span>文章作者:</span>杨苏辉</a></p>
   <p><span>发布时间:</span>2020年10月25日 - 14:04</p>
-  <p><span>最后更新:</span>2020年10月25日 - 21:15</p>
+  <p><span>最后更新:</span>2021年01月09日 - 20:27</p>
   <p><span>原始链接:</span><a href="/p/5c8c.html" title="OCR数据生成之SynthText场景文本">https://yangsuhui.github.io/p/5c8c.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yangsuhui.github.io/p/5c8c.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -458,6 +524,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SynthText%E5%AE%98%E6%96%B9%E7%A4%BA%E4%BE%8B%E7%94%9F%E6%88%90%E6%95%88%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">SynthText官方示例生成效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-New-Images"><span class="nav-number">2.</span> <span class="nav-text">Adding New Images</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90depth"><span class="nav-number">2.1.</span> <span class="nav-text">生成depth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90seg"><span class="nav-number">2.2.</span> <span class="nav-text">生成seg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6depth%E5%92%8Cseg%E7%AD%89%E6%96%87%E4%BB%B6%E6%88%90%E7%BB%9F%E4%B8%80%E7%9A%84dest-h5"><span class="nav-number">2.3.</span> <span class="nav-text">合并depth和seg等文件成统一的dest.h5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE"><span class="nav-number">2.4.</span> <span class="nav-text">生成数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E6%96%87%E6%9C%AC%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">2.5.</span> <span class="nav-text">垂直文本的生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -473,7 +540,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -549,12 +616,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">74k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:08</span>
 </div>
 
 <div>
